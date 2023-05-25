@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "494200221244",
+    "project_id": "vallo-app",
+    "storage_bucket": "vallo-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494200221244:android:dde99ef3b0c72ed4159d39",
+        "android_client_info": {
+          "package_name": "br.com.brunodeev.vallo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494200221244-jttv8o9c0l0c7gmgkas9jn4jsq83e32j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRnHD51h7nthmZseAtYXYszdtHV7MPf3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494200221244-jttv8o9c0l0c7gmgkas9jn4jsq83e32j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
