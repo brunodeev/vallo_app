@@ -1,7 +1,17 @@
-class PageManager {
-  PageManager(this.currentIndex);
+import 'package:flutter/material.dart';
 
-  int currentIndex;
+import '../screens/home_screen.dart';
+import '../screens/profile_screen.dart';
 
-  void setPage(int value) {}
+class PageManager extends ChangeNotifier {
+  int _currentTab = 0;
+  final List<Widget> _screens = const [HomeScreen(), ProfileScreen()];
+
+  set currentTab(int tab) {
+    _currentTab = tab;
+    notifyListeners();
+  }
+
+  int get currentTab => _currentTab;
+  get currentScreen => _screens[_currentTab];
 }
