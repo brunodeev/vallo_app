@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vallo_app/screens/home_screen.dart';
 
-import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
 
 class PageManager extends ChangeNotifier {
