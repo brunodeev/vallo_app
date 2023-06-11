@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
       ),
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: LoginScreen(),
     );
   }
 }
