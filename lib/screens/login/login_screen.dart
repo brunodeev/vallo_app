@@ -31,114 +31,138 @@ class LoginScreen extends StatelessWidget {
           Center(
             child: Form(
               key: formKey,
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                shrinkWrap: true,
-                children: [
-                  Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    color: const Color(0xFFD6D6D6),
-                    child: TextFormField(
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                        hintText: 'Email',
-                        hintStyle: TextStyle(
-                          color: Color(0xFF646464),
+              child: Consumer<UserManager>(
+                builder: (_, userManager, __) {
+                  return ListView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 15),
+                    shrinkWrap: true,
+                    children: [
+                      Container(
+                        height: 35,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: const Color(0xFFD6D6D6),
+                        ),
+                        child: TextFormField(
+                          enabled: !userManager.loading,
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 9.5),
+                            hintText: 'Email',
+                            hintStyle: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF646464),
+                            ),
+                          ),
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                          style: const TextStyle(color: kPrimaryColor),
+                          validator: (email) {
+                            if (!emailValid(email!)) {
+                              return 'Email Inválido';
+                            }
+                            return null;
+                          },
                         ),
                       ),
-                      keyboardType: TextInputType.text,
-                      autocorrect: false,
-                      style: const TextStyle(color: kPrimaryColor),
-                      validator: (email) {
-                        if (!emailValid(email!)) {
-                          return 'Email Inválido!';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Card(
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    color: const Color(0xFFD6D6D6),
-                    child: TextFormField(
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                        hintText: 'Senha',
-                        hintStyle: TextStyle(
-                          color: Color(0xFF646464),
+                      const SizedBox(height: 10),
+                      Container(
+                        height: 35,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: const Color(0xFFD6D6D6),
+                        ),
+                        child: TextFormField(
+                          enabled: !userManager.loading,
+                          controller: passwordController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 9.5),
+                            hintText: 'Senha',
+                            hintStyle: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF646464),
+                            ),
+                          ),
+                          autocorrect: false,
+                          style: const TextStyle(color: kPrimaryColor),
+                          obscureText: true,
+                          validator: (password) {
+                            if (password == null || password.length < 6) {
+                              return 'Senha Inválida';
+                            }
+                            return null;
+                          },
                         ),
                       ),
-                      autocorrect: false,
-                      style: const TextStyle(color: kPrimaryColor),
-                      obscureText: true,
-                      validator: (password) {
-                        if (password == null || password.length < 6) {
-                          return 'Senha Inválida';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.only(right: 6),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 20),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              'Esqueci minha senha',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: kPrimaryColor.withOpacity(.7),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                       ),
-                      onPressed: () {},
-                      child: const Text(
-                        'Esqueci minha senha',
-                        style: TextStyle(color: kPrimaryColor),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: kPrimaryColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8))),
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          context.read<UserManager>().signIn(
-                                user: UserModel(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                ),
-                                onFail: (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(e,
-                                          style: const TextStyle(fontSize: 18)),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: kPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8))),
+                          onPressed: userManager.loading
+                              ? null
+                              : () {
+                                  if (formKey.currentState!.validate()) {
+                                    userManager.signIn(
+                                      user: UserModel(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                      ),
+                                      onFail: (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(e,
+                                                style: const TextStyle(
+                                                    fontSize: 18)),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      },
+                                      onSuccess: () {},
+                                    );
+                                  }
                                 },
-                                onSuccess: () {},
-                              );
-                        }
-                      },
-                      child: const Text(
-                        'Entrar',
-                        style: TextStyle(color: kSecondaryColor, fontSize: 16),
+                          child: !userManager.loading
+                              ? const Text(
+                                  'Entrar',
+                                  style: TextStyle(
+                                      color: kSecondaryColor, fontSize: 16),
+                                )
+                              : const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                        ),
                       ),
-                    ),
-                  ),
-                ],
+                    ],
+                  );
+                },
               ),
             ),
           ),
