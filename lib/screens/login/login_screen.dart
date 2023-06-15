@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vallo_app/constants/constant_colors.dart';
 import 'package:vallo_app/helpers/validators.dart';
+import 'package:vallo_app/models/user_manager.dart';
+import 'package:vallo_app/models/user_model.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -37,6 +43,7 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8)),
                     color: const Color(0xFFD6D6D6),
                     child: TextFormField(
+                      controller: emailController,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
@@ -47,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       keyboardType: TextInputType.text,
                       autocorrect: false,
-                      style: const TextStyle(color: Color(0xFF646464)),
+                      style: const TextStyle(color: kPrimaryColor),
                       validator: (email) {
                         if (!emailValid(email!)) {
                           return 'Email Inválido!';
@@ -63,6 +70,7 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8)),
                     color: const Color(0xFFD6D6D6),
                     child: TextFormField(
+                      controller: passwordController,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
@@ -72,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       autocorrect: false,
-                      style: const TextStyle(color: Color(0xFF646464)),
+                      style: const TextStyle(color: kPrimaryColor),
                       obscureText: true,
                       validator: (password) {
                         if (password == null || password.length < 6) {
@@ -105,7 +113,24 @@ class LoginScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8))),
                       onPressed: () {
-                        formKey.currentState!.validate();
+                        if (formKey.currentState!.validate()) {
+                          context.read<UserManager>().signIn(
+                                user: UserModel(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                ),
+                                onFail: (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e,
+                                          style: const TextStyle(fontSize: 18)),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                },
+                                onSuccess: () {},
+                              );
+                        }
                       },
                       child: const Text(
                         'Entrar',

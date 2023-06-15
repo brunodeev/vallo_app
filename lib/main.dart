@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vallo_app/constants/constant_colors.dart';
+import 'package:vallo_app/models/user_manager.dart';
 import 'package:vallo_app/screens/login/login_screen.dart';
 
 Future<void> main() async {
@@ -16,13 +18,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        primaryColor: kPrimaryColor,
+    return MultiProvider(
+      providers: [
+        Provider<UserManager>(
+          create: (_) => UserManager(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          useMaterial3: true,
+          primaryColor: kPrimaryColor,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
     );
   }
 }
