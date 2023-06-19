@@ -17,18 +17,18 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kSecondaryColor,
-      appBar: AppBar(
-        backgroundColor: kSecondaryColor,
-      ),
       body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: MediaQuery.of(context).viewInsets.bottom == 0
+            ? const NeverScrollableScrollPhysics()
+            : const BouncingScrollPhysics(),
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 50, bottom: 35),
+            margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * .15, bottom: 35),
             height: 150,
             child: Image.asset('assets/images/logo_vallo_transparent.png'),
           ),
-          Center(
+          SingleChildScrollView(
             child: Form(
               key: formKey,
               child: Consumer<UserManager>(
@@ -158,6 +158,20 @@ class LoginScreen extends StatelessWidget {
                               : const Center(
                                   child: CircularProgressIndicator(),
                                 ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          child: const Text(
+                            'Criar conta',
+                            style: TextStyle(color: kPrimaryColor),
+                          ),
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/signup');
+                          },
                         ),
                       ),
                     ],
